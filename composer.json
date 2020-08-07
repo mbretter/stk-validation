@@ -1,0 +1,35 @@
+{
+  "name": "mbretter/stk-validation",
+  "type": "library",
+  "description": "Stk Schema Validation of nested data structures",
+  "keywords": ["stk","validation"],
+  "homepage": "https://www.bretterklieber.com",
+  "license": "BSD-3-Clause",
+  "require": {
+    "php": "^7.4",
+    "mbretter/stk-di": "^1.1",
+    "mbretter/stk-immutable": "^1.0",
+    "respect/validation": "^2.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9",
+    "friendsofphp/php-cs-fixer": "^2.16"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "StkTest\\": "test/unit/Stk"
+    }
+  },
+  "scripts": {
+    "test-unit": "phpunit -v --testsuite=\"unit tests\" --testdox --bootstrap test/unit/bootstrap.php",
+    "test-reports": "phpunit --testsuite=\"unit tests\" --bootstrap test/unit/bootstrap.php --coverage-html reports/coverage --coverage-clover reports/clover.xml --coverage-crap4j reports/crap4j.xml --log-junit reports/junit.xml",
+    "cs-check": "php-cs-fixer fix -v --dry-run --using-cache=no src",
+    "cs-fix": "php-cs-fixer fix -v --using-cache=no src",
+    "check-migration-71": "php-cs-fixer fix -v --dry-run --using-cache=no src --rules=@PHP71Migration --allow-risky=yes"
+  },
+  "autoload": {
+    "psr-4": {
+      "Stk\\": "src/Stk"
+    }
+  }
+}
