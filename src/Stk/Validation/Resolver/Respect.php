@@ -58,12 +58,11 @@ class Respect implements Injectable, ResolverInterface
 
     protected function resolveWildcard(MapInterface $data, array $def, array &$errors): bool
     {
-        $fieldPath = $def['field'];
-        if (array_search('*', $fieldPath, true) === false) {
+        if (array_search('*', $def['field'], true) === false) {
             return false;
         }
 
-        $data->walk(function ($path, $value) use ($fieldPath, $def, &$errors) {
+        $data->walk(function ($path, $value) use ($def, &$errors) {
             $collected = [];
             $key       = implode('.', $path);
 
@@ -71,7 +70,7 @@ class Respect implements Injectable, ResolverInterface
                 return;
             }
 
-            foreach ($fieldPath as $idx => $f) {
+            foreach ($def['field'] as $idx => $f) {
                 if (!isset($path[$idx])) {
                     break;
                 }
