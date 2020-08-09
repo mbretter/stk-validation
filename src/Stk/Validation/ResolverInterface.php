@@ -2,10 +2,9 @@
 
 namespace Stk\Validation;
 
-use Stk\Immutable\MapInterface;
+use Respect\Validation\Validator;
 
 interface ResolverInterface
 {
-    public function resolve(MapInterface $data, array $schema): array;
-
+    public function resolve(RuleInterface $rule): ?Validator;
 }

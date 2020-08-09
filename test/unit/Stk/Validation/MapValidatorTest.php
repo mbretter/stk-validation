@@ -1,13 +1,22 @@
 <?php
 
-namespace StkTest\Validation\Resolver;
+namespace StkTest\Validation;
 
 use PHPUnit\Framework\TestCase;
 use Stk\Immutable\Map;
-use Stk\Validation\Resolver;
+use Stk\Validation\MapValidator;
 
-class RespectTest extends TestCase
+class MapValidatorTest extends TestCase
 {
+    protected MapValidator $validator;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->validator = new MapValidator();
+    }
+
 
     public function testSimple()
     {
@@ -34,8 +43,7 @@ class RespectTest extends TestCase
             ]
         ];
 
-        $resolver = new Resolver\Respect();
-        $errors   = $resolver->resolve($data, $schema);
+        $errors = $this->validator->validate($data, $schema);
         $this->assertEmpty($errors);
     }
 
@@ -59,8 +67,7 @@ class RespectTest extends TestCase
             ]
         ];
 
-        $resolver = new Resolver\Respect();
-        $errors   = $resolver->resolve($data, $schema);
+        $errors = $this->validator->validate($data, $schema);
         $this->assertEquals([
             'name'  => 'Name contains invalid characters',
             'email' => 'E-Mail is invalid',
@@ -87,8 +94,7 @@ class RespectTest extends TestCase
             ]
         ];
 
-        $resolver = new Resolver\Respect();
-        $errors   = $resolver->resolve($data, $schema);
+        $errors = $this->validator->validate($data, $schema);
         $this->assertEquals([
             'person.email' => 'invalid email',
         ], $errors);
@@ -113,8 +119,7 @@ class RespectTest extends TestCase
             ]
         ];
 
-        $resolver = new Resolver\Respect();
-        $errors   = $resolver->resolve($data, $schema);
+        $errors = $this->validator->validate($data, $schema);
         $this->assertEquals([
             'name' => 'Name is mandatory',
         ], $errors);
@@ -149,8 +154,7 @@ class RespectTest extends TestCase
             ]
         ];
 
-        $resolver = new Resolver\Respect();
-        $errors   = $resolver->resolve($data, $schema);
+        $errors = $this->validator->validate($data, $schema);
         $this->assertEquals([
             'lang.de.name' => 'Name contains invalid characters',
             'lang.en.name' => 'Name contains invalid characters',
@@ -187,8 +191,7 @@ class RespectTest extends TestCase
             ]
         ];
 
-        $resolver = new Resolver\Respect();
-        $errors   = $resolver->resolve($data, $schema);
+        $errors = $this->validator->validate($data, $schema);
         $this->assertEquals([
             'lang.de.name' => 'Name is invalid',
             'lang.en.name' => 'Name contains invalid characters',
@@ -232,8 +235,7 @@ class RespectTest extends TestCase
             ]
         ];
 
-        $resolver = new Resolver\Respect();
-        $errors   = $resolver->resolve($data, $schema);
+        $errors = $this->validator->validate($data, $schema);
         $this->assertEquals([
             'color'                => 'Color is not a valid hex value',
             'lang.de.person.name'  => 'Name contains invalid characters',
@@ -256,8 +258,7 @@ class RespectTest extends TestCase
         ];
 
         $this->expectExceptionMessage('invalid rule definition.');
-        $resolver = new Resolver\Respect();
-        $resolver->resolve($data, $schema);
+        $this->validator->validate($data, $schema);
     }
 
     public function testWithEmptyRule()
@@ -274,8 +275,7 @@ class RespectTest extends TestCase
             ]
         ];
 
-        $resolver = new Resolver\Respect();
-        $errors   = $resolver->resolve($data, $schema);
+        $errors = $this->validator->validate($data, $schema);
         $this->assertEquals([
             'name' => 'Name is invalid'
         ], $errors);
