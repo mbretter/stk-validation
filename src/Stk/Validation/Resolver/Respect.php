@@ -22,25 +22,39 @@ class Respect implements Injectable, ResolverInterface
     /**
      *
      * @param array $rule
+     * @param Validator|null $v
      *
      * @return mixed
      */
-    protected function buildChain(array $rule): ?Validator
+    protected function buildChain(array $rule, Validator $v = null): ?Validator
     {
         if (count($rule) === 0) {
             return null;
         }
 
-        $ruleName = array_shift($rule);
-        if (in_array($ruleName, ['allOf', 'anyOf', 'noneOf', 'oneOf', 'not'])) {
-            $args = [];
-            foreach ($rule as $r) {
-                $args[] = $this->buildChain(is_array($r) ? $r : [$r]);
-            }
+        if ($v === null) {
+            $v = Validator::create();
+        }
 
-            $v = call_user_func_array([Validator::class, $ruleName], $args);
+        $hasChain = is_array($rule[0]);
+
+        if ($hasChain) {
+            foreach ($rule as $r) {
+                $v = $this->buildChain($r, $v);
+            }
         } else {
-            $v = call_user_func_array([Validator::class, $ruleName], $rule);
+            $ruleName = array_shift($rule);
+
+            if (in_array($ruleName, ['allOf', 'anyOf', 'noneOf', 'oneOf', 'not'])) {
+                $args = [];
+                foreach ($rule as $r) {
+                    $args[] = $this->buildChain(is_array($r) ? $r : [$r]);
+                }
+
+                $v = call_user_func_array([$v, $ruleName], $args);
+            } else {
+                $v = call_user_func_array([$v, $ruleName], $rule);
+            }
         }
 
         return $v;

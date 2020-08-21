@@ -281,4 +281,51 @@ class MapValidatorTest extends TestCase
         ], $errors);
     }
 
+    public function testChain()
+    {
+        $data = new Map([
+            'person' => [
+                'email' => 'john'
+            ]
+        ]);
+
+        $schema = [
+            [
+                'field'   => ['person', 'email'],
+                'rule'    => [
+                    ['regex', '/^[\w_.-]+$/i'],
+                    ['length', 6, 40]
+                ],
+                'message' => 'invalid email'
+            ]
+        ];
+
+        $errors = $this->validator->validate($data, $schema);
+        $this->assertEquals([
+            'person.email' => 'invalid email',
+        ], $errors);
+    }
+
+    public function testChainOk()
+    {
+        $data = new Map([
+            'person' => [
+                'email' => 'john'
+            ]
+        ]);
+
+        $schema = [
+            [
+                'field'   => ['person', 'email'],
+                'rule'    => [
+                    ['regex', '/^[\w_.-]+$/i'],
+                    ['length', 2, 40]
+                ],
+                'message' => 'invalid email'
+            ]
+        ];
+
+        $errors = $this->validator->validate($data, $schema);
+        $this->assertEmpty($errors);
+    }
 }
