@@ -328,4 +328,52 @@ class MapValidatorTest extends TestCase
         $errors = $this->validator->validate($data, $schema);
         $this->assertEmpty($errors);
     }
+
+    public function testNullable()
+    {
+        $data = new Map([
+            'person' => [
+                'email' => null
+            ]
+        ]);
+
+        $schema = [
+            [
+                'field'   => ['person', 'email'],
+                'rule'    => [
+                    'nullable',
+                    'email'
+                ],
+                'message' => 'invalid email'
+            ]
+        ];
+
+        $errors = $this->validator->validate($data, $schema);
+        $this->assertEmpty($errors);
+    }
+
+    public function testNullableNotNull()
+    {
+        $data = new Map([
+            'person' => [
+                'email' => 'x'
+            ]
+        ]);
+
+        $schema = [
+            [
+                'field'   => ['person', 'email'],
+                'rule'    => [
+                    'nullable',
+                    'email'
+                ],
+                'message' => 'invalid email'
+            ]
+        ];
+
+        $errors = $this->validator->validate($data, $schema);
+        $this->assertEquals([
+            'person.email' => 'invalid email',
+        ], $errors);
+    }
 }

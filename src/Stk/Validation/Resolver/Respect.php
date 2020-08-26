@@ -45,7 +45,7 @@ class Respect implements Injectable, ResolverInterface
         } else {
             $ruleName = array_shift($rule);
 
-            if (in_array($ruleName, ['allOf', 'anyOf', 'noneOf', 'oneOf', 'not'])) {
+            if (in_array($ruleName, ['allOf', 'anyOf', 'noneOf', 'oneOf', 'not', 'nullable'])) {
                 $args = [];
                 foreach ($rule as $r) {
                     $args[] = $this->buildChain(is_array($r) ? $r : [$r]);
