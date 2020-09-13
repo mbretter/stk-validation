@@ -376,4 +376,56 @@ class MapValidatorTest extends TestCase
             'person.email' => 'invalid email',
         ], $errors);
     }
+
+    public function testWithKey()
+    {
+        $data = new Map([
+            'person' => [
+                'email' => 'x'
+            ]
+        ]);
+
+        $schema = [
+            [
+                'field'   => ['person', 'email'],
+                'key'     => 'person_email',
+                'rule'    => [
+                    'nullable',
+                    'email'
+                ],
+                'message' => 'invalid email'
+            ]
+        ];
+
+        $errors = $this->validator->validate($data, $schema);
+        $this->assertEquals([
+            'person_email' => 'invalid email',
+        ], $errors);
+    }
+
+    public function testWithKeyArray()
+    {
+        $data = new Map([
+            'person' => [
+                'email' => 'x'
+            ]
+        ]);
+
+        $schema = [
+            [
+                'field'   => ['person', 'email'],
+                'key'     => ['errors', 'person_email'],
+                'rule'    => [
+                    'nullable',
+                    'email'
+                ],
+                'message' => 'invalid email'
+            ]
+        ];
+
+        $errors = $this->validator->validate($data, $schema);
+        $this->assertEquals([
+            'errors.person_email' => 'invalid email',
+        ], $errors);
+    }
 }

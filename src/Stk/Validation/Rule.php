@@ -14,18 +14,22 @@ class Rule implements Injectable, RuleInterface
 
     protected string $message;
 
+    protected array $key;
+
     /**
      * Rule constructor.
      *
      * @param array $field
      * @param array $rule
      * @param string $message
+     * @param array $key
      */
-    public function __construct(array $field, array $rule, string $message)
+    public function __construct(array $field, array $rule, string $message, array $key)
     {
         $this->field   = $field;
         $this->rule    = $rule;
         $this->message = $message;
+        $this->key     = $key;
     }
 
     public static function fromArray(array $def): RuleInterface
@@ -36,14 +40,19 @@ class Rule implements Injectable, RuleInterface
 
         $def = self::normalize($def);
 
-        return new self($def['field'], $def['rule'], $def['message']);
+        return new self($def['field'], $def['rule'], $def['message'], $def['key']);
     }
 
     protected static function normalize(array $def): array
     {
-
         $def['field'] = is_array($def['field']) ? $def['field'] : [$def['field']];
         $def['rule']  = is_array($def['rule']) ? $def['rule'] : [$def['rule']];
+
+        if (isset($def['key'])) {
+            $def['key'] = is_array($def['key']) ? $def['key'] : [$def['key']];
+        } else {
+            $def['key'] = $def['field'];
+        }
 
         return $def;
     }
@@ -74,6 +83,6 @@ class Rule implements Injectable, RuleInterface
 
     public function getKey(): string
     {
-        return implode('.', $this->field);
+        return implode('.', $this->key);
     }
 }
