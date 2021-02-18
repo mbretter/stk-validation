@@ -125,6 +125,26 @@ class MapValidatorTest extends TestCase
         ], $errors);
     }
 
+    public function testMandatory2()
+    {
+        $data = new Map([
+            'name' => '',
+        ]);
+
+        $schema = [
+            [
+                'field'   => 'name',
+                'rule'    => [['notOptional'], ['stringType']],
+                'message' => 'Name is mandatory'
+            ],
+        ];
+
+        $errors = $this->validator->validate($data, $schema);
+        $this->assertEquals([
+            'name' => 'Name is mandatory',
+        ], $errors);
+    }
+
     public function testWildcard()
     {
         $data = new Map([
