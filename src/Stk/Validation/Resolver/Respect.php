@@ -19,13 +19,6 @@ class Respect implements Injectable, ResolverInterface
         return $v;
     }
 
-    /**
-     *
-     * @param array $rule
-     * @param Validator|null $v
-     *
-     * @return mixed
-     */
     protected function buildChain(array $rule, Validator $v = null): ?Validator
     {
         if (count($rule) === 0) {
@@ -51,8 +44,10 @@ class Respect implements Injectable, ResolverInterface
                     $args[] = $this->buildChain(is_array($r) ? $r : [$r]);
                 }
 
+                /** @phpstan-ignore-next-line */
                 $v = call_user_func_array([$v, $ruleName], $args);
             } else {
+                /** @phpstan-ignore-next-line */
                 $v = call_user_func_array([$v, $ruleName], $rule);
             }
         }

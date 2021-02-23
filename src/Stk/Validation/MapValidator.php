@@ -32,6 +32,11 @@ class MapValidator implements Injectable
         return $errors;
     }
 
+    /**
+     * @param RuleInterface $rule
+     * @param mixed $value
+     * @return bool
+     */
     protected function resolveValidate(RuleInterface $rule, $value): bool
     {
         $resolver  = new Respect();
