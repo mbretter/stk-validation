@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "03eeb235208bca48c7c896b6ec4b76a8",
+    "content-hash": "f56e0475bf9e0e18fdb9a132ad8d05f5",
     "packages": [
         {
             "name": "mbretter/stk-di",

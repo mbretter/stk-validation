@@ -8,7 +8,7 @@
   "require": {
     "php": "^7.4|^8.0",
     "mbretter/stk-di": "^2.0.1",
-    "mbretter/stk-immutable": "^2.0.1",
+    "mbretter/stk-immutable": "^2.0.1|^1.0.4",
     "respect/validation": "^2.2"
   },
   "require-dev": {
