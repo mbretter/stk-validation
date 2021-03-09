@@ -6,9 +6,9 @@
   "homepage": "https://www.bretterklieber.com",
   "license": "BSD-3-Clause",
   "require": {
-    "php": "^7.4",
-    "mbretter/stk-di": "^1.1",
-    "mbretter/stk-immutable": "^1.0",
+    "php": "^7.4|^8.0",
+    "mbretter/stk-di": "^2.0.1",
+    "mbretter/stk-immutable": "^2.0.1",
     "respect/validation": "^2.2"
   },
   "require-dev": {
