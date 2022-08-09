@@ -80,7 +80,6 @@ class MapValidator implements Injectable
                 }
 
             }
-
         });
 
         return true;

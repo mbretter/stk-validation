@@ -17,8 +17,7 @@ class MapValidatorTest extends TestCase
         $this->validator = new MapValidator();
     }
 
-
-    public function testSimple()
+    public function testSimple(): void
     {
         $data = new Map([
             'name'  => 'Joe',
@@ -47,7 +46,7 @@ class MapValidatorTest extends TestCase
         $this->assertEmpty($errors);
     }
 
-    public function testWithErrors()
+    public function testWithErrors(): void
     {
         $data = new Map([
             'name'  => 'Joe`',
@@ -74,7 +73,7 @@ class MapValidatorTest extends TestCase
         ], $errors);
     }
 
-    public function testNested()
+    public function testNested(): void
     {
         $data = new Map([
             'person' => [
@@ -100,7 +99,7 @@ class MapValidatorTest extends TestCase
         ], $errors);
     }
 
-    public function testMandatory()
+    public function testMandatory(): void
     {
         $data = new Map([
             'name' => '',
@@ -125,7 +124,7 @@ class MapValidatorTest extends TestCase
         ], $errors);
     }
 
-    public function testMandatory2()
+    public function testMandatory2(): void
     {
         $data = new Map([
             'name' => '',
@@ -145,7 +144,7 @@ class MapValidatorTest extends TestCase
         ], $errors);
     }
 
-    public function testWildcard()
+    public function testWildcard(): void
     {
         $data = new Map([
             'color' => 'red',
@@ -182,7 +181,7 @@ class MapValidatorTest extends TestCase
         ], $errors);
     }
 
-    public function testWildcardDuplicate()
+    public function testWildcardDuplicate(): void
     {
         $data = new Map([
             'color' => 'red',
@@ -218,7 +217,7 @@ class MapValidatorTest extends TestCase
         ], $errors);
     }
 
-    public function testWildcardMultiple()
+    public function testWildcardMultiple(): void
     {
         $data = new Map([
             'color' => 'red',
@@ -264,7 +263,7 @@ class MapValidatorTest extends TestCase
         ], $errors);
     }
 
-    public function testInvalidDefinition()
+    public function testInvalidDefinition(): void
     {
         $data = new Map([
             'name' => '',
@@ -281,7 +280,7 @@ class MapValidatorTest extends TestCase
         $this->validator->validate($data, $schema);
     }
 
-    public function testWithEmptyRule()
+    public function testWithEmptyRule(): void
     {
         $data = new Map([
             'name' => '',
@@ -301,7 +300,7 @@ class MapValidatorTest extends TestCase
         ], $errors);
     }
 
-    public function testChain()
+    public function testChain(): void
     {
         $data = new Map([
             'person' => [
@@ -326,7 +325,7 @@ class MapValidatorTest extends TestCase
         ], $errors);
     }
 
-    public function testChainOk()
+    public function testChainOk(): void
     {
         $data = new Map([
             'person' => [
@@ -349,7 +348,7 @@ class MapValidatorTest extends TestCase
         $this->assertEmpty($errors);
     }
 
-    public function testNullable()
+    public function testNullable(): void
     {
         $data = new Map([
             'person' => [
@@ -372,7 +371,7 @@ class MapValidatorTest extends TestCase
         $this->assertEmpty($errors);
     }
 
-    public function testOptional()
+    public function testOptional(): void
     {
         $data = new Map([
             'person' => [
@@ -395,7 +394,47 @@ class MapValidatorTest extends TestCase
         $this->assertEmpty($errors);
     }
 
-    public function testNullableNotNull()
+    public function testNotOptionalNonExistendVal(): void
+    {
+        $data = new Map();
+
+        $schema = [
+            [
+                'field'   => ['person', 'email'],
+                'rule'    => 'notOptional',
+                'message' => 'email required'
+            ]
+        ];
+
+        $errors = $this->validator->validate($data, $schema);
+        $this->assertNotEmpty($errors);
+        $this->assertEquals(['person.email' => 'email required'], $errors);
+    }
+
+    public function testNotOptionalWildcardNonExistendVal(): void
+    {
+        $data = new Map([
+            'lang' => [
+                'de' => [
+                    'name' => 'Bob'
+                ]
+            ]
+        ]);
+
+        $schema = [
+            [
+                'field'   => ['lang', '*', 'email'],
+                'rule'    => 'notOptional',
+                'message' => 'email required'
+            ]
+        ];
+
+        // does not work at the moment
+        $errors = $this->validator->validate($data, $schema);
+        $this->assertEmpty($errors);
+    }
+
+    public function testNullableNotNull(): void
     {
         $data = new Map([
             'person' => [
@@ -420,7 +459,7 @@ class MapValidatorTest extends TestCase
         ], $errors);
     }
 
-    public function testWithKey()
+    public function testWithKey(): void
     {
         $data = new Map([
             'person' => [
@@ -446,7 +485,7 @@ class MapValidatorTest extends TestCase
         ], $errors);
     }
 
-    public function testWithKeyArray()
+    public function testWithKeyArray(): void
     {
         $data = new Map([
             'person' => [
