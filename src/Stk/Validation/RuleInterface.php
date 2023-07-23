@@ -2,10 +2,8 @@
 
 namespace Stk\Validation;
 
-
 interface RuleInterface
 {
-
     /**
      * @return array
      */
